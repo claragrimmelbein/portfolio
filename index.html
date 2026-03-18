@@ -1,53 +1,626 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Clara Grimmelbein | Portfolio</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Personal Page</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+  }
+
+  /* ===== TOP NAV ===== */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  }
+
+  .nav-logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #e60023;
+    cursor: pointer;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 8px;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 8px 16px;
+    border-radius: 24px;
+    transition: background 0.2s;
+  }
+
+  .nav-links a:hover,
+  .nav-links a.active {
+    background: #111;
+    color: #fff;
+  }
+
+  .nav-search {
+    flex: 1;
+    max-width: 500px;
+    margin: 0 16px;
+    position: relative;
+  }
+
+  .nav-search input {
+    width: 100%;
+    padding: 12px 16px 12px 40px;
+    border-radius: 24px;
+    border: none;
+    background: #e9e9e9;
+    font-size: 15px;
+    outline: none;
+    transition: background 0.2s;
+  }
+
+  .nav-search input:focus {
+    background: #ddd;
+  }
+
+  .nav-search::before {
+    content: '🔍';
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+  }
+
+  .nav-profile {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+  }
+
+  /* ===== PROFILE HEADER ===== */
+  .profile-header {
+    text-align: center;
+    padding: 40px 20px 20px;
+    background: #fff;
+  }
+
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e60023, #ff6b6b);
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .profile-header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .profile-header .handle {
+    color: #888;
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+
+  .profile-header .bio {
+    max-width: 500px;
+    margin: 0 auto 16px;
+    color: #555;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .profile-stats {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 16px;
+  }
+
+  .profile-stats span {
+    font-size: 14px;
+    color: #555;
+  }
+
+  .profile-stats strong {
+    color: #111;
+  }
+
+  .profile-actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    border-radius: 24px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .btn:hover { opacity: 0.85; }
+
+  .btn-primary {
+    background: #e60023;
+    color: #fff;
+  }
+
+  .btn-secondary {
+    background: #e9e9e9;
+    color: #333;
+  }
+
+  /* ===== TABS ===== */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding: 0 20px 0;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+  }
+
+  .tab {
+    padding: 12px 20px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: border-color 0.2s;
+    color: #555;
+  }
+
+  .tab:hover { color: #111; }
+
+  .tab.active {
+    border-bottom-color: #111;
+    color: #111;
+  }
+
+  /* ===== MASONRY GRID ===== */
+  .masonry-container {
+    padding: 16px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .masonry {
+    columns: 5;
+    column-gap: 16px;
+  }
+
+  .pin {
+    break-inside: avoid;
+    margin-bottom: 16px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative;
+  }
+
+  .pin:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+
+  .pin-img {
+    width: 100%;
+    display: block;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .pin-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.3);
+    opacity: 0;
+    transition: opacity 0.2s;
+    border-radius: 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 12px;
+  }
+
+  .pin:hover .pin-overlay {
+    opacity: 1;
+  }
+
+  .pin-save {
+    background: #e60023;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 24px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .pin-body {
+    padding: 8px 12px 12px;
+  }
+
+  .pin-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .pin-desc {
+    font-size: 12px;
+    color: #888;
+    line-height: 1.4;
+  }
+
+  .pin-quote {
+    padding: 28px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  /* ===== COLOR THEMES for quote cards ===== */
+  .bg-rose    { background: linear-gradient(135deg, #fce4ec, #f8bbd0); color: #880e4f; }
+  .bg-sky     { background: linear-gradient(135deg, #e0f7fa, #b2ebf2); color: #006064; }
+  .bg-peach   { background: linear-gradient(135deg, #fff3e0, #ffe0b2); color: #e65100; }
+  .bg-mint    { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); color: #1b5e20; }
+  .bg-lav     { background: linear-gradient(135deg, #ede7f6, #d1c4e9); color: #4a148c; }
+  .bg-dark    { background: #222; color: #fff; }
+  .bg-warm    { background: linear-gradient(135deg, #3e2723, #5d4037); color: #ffcc80; }
+  .bg-sunset  { background: linear-gradient(135deg, #ff6b6b, #ffa07a); color: #fff; }
+
+  /* ===== PLACEHOLDER IMAGE COLORS ===== */
+  .ph {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .ph-1 { background: #b5838d; height: 280px; }
+  .ph-2 { background: #6d6875; height: 360px; }
+  .ph-3 { background: #b08968; height: 240px; }
+  .ph-4 { background: #7f9183; height: 320px; }
+  .ph-5 { background: #e6b8a2; height: 200px; }
+  .ph-6 { background: #9a8c98; height: 300px; }
+  .ph-7 { background: #577590; height: 260px; }
+  .ph-8 { background: #c9ada7; height: 340px; }
+  .ph-9 { background: #a3b18a; height: 220px; }
+  .ph-10 { background: #dda15e; height: 290px; }
+  .ph-11 { background: #bc6c25; height: 270px; }
+  .ph-12 { background: #606c38; height: 310px; }
+  .ph-13 { background: #283618; height: 250px; }
+  .ph-14 { background: #8ecae6; height: 330px; }
+  .ph-15 { background: #219ebc; height: 200px; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: #aaa;
+    font-size: 13px;
+  }
+
+  footer a {
+    color: #888;
+    text-decoration: none;
+  }
+
+  footer a:hover { text-decoration: underline; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1200px) {
+    .masonry { columns: 4; }
+  }
+  @media (max-width: 900px) {
+    .masonry { columns: 3; }
+    .nav-search { display: none; }
+  }
+  @media (max-width: 600px) {
+    .masonry { columns: 2; column-gap: 8px; }
+    .masonry-container { padding: 8px; }
+    .pin { margin-bottom: 8px; }
+    .profile-header h1 { font-size: 24px; }
+    .profile-avatar { width: 88px; height: 88px; font-size: 36px; }
+  }
+</style>
 </head>
 <body>
-  <header>
-    <h1>Clara Grimmelbein</h1>
-    <p>Computer Science & Italian | UVA '26</p>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#resume">Resume</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
 
-  <section id="about">
-    <h2>About Me</h2>
-    <p>I’m a rising senior at UVA studying Computer Science and Italian, passionate about the intersection of technology, design, and real-world impact. Currently interning in tech consulting at PwC.</p>
-  </section>
+<!-- ===== NAVIGATION ===== -->
+<nav>
+  <div class="nav-logo">📌</div>
+  <div class="nav-links">
+    <a href="#" class="active">Home</a>
+    <a href="#">Explore</a>
+    <a href="#">Create</a>
+  </div>
+  <div class="nav-search">
+    <input type="text" placeholder="Search pins...">
+  </div>
+  <div class="nav-profile">C</div>
+</nav>
 
-  <section id="projects">
-    <h2>Projects</h2>
-    <div class="project">
-      <h3>NLP-Driven Italian Financial Market Intelligence Web App</h3>
-      <p>Built with React & Django, this app uses NLP to interpret Italian financial news. Aimed at uncovering trends from regional sources often overlooked by international investors.</p>
+<!-- ===== PROFILE HEADER ===== -->
+<div class="profile-header">
+  <div class="profile-avatar">C</div>
+  <h1>Your Name</h1>
+  <div class="handle">@yourhandle</div>
+  <div class="bio">✨ Designer · Dreamer · Creator · Coffee lover ☕<br>Curating ideas & inspiration from around the world.</div>
+  <div class="profile-stats">
+    <span><strong>1.2k</strong> followers</span>
+    <span><strong>340</strong> following</span>
+    <span><strong>28</strong> boards</span>
+  </div>
+  <div class="profile-actions">
+    <button class="btn btn-primary">Follow</button>
+    <button class="btn btn-secondary">Message</button>
+  </div>
+</div>
+
+<!-- ===== TABS ===== -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(this)">Created</div>
+  <div class="tab" onclick="switchTab(this)">Saved</div>
+  <div class="tab" onclick="switchTab(this)">Boards</div>
+</div>
+
+<!-- ===== PIN GRID ===== -->
+<div class="masonry-container">
+  <div class="masonry">
+
+    <!-- Pin: Image Card -->
+    <div class="pin">
+      <div class="ph ph-1">📷</div>
+      <div class="pin-overlay"><button class="pin-save">Save</button></div>
+      <div class="pin-body">
+        <div class="pin-title">Morning light in the studio</div>
+        <div class="pin-desc">Photography · Lifestyle</div>
+      </div>
     </div>
-    <div class="project">
-      <h3>Astrophysics Algorithmic Application</h3>
-      <p>Java-based GUI tool to compute and visualize habitability statistics of exoplanets using core principles from astrophysics.</p>
+
+    <!-- Pin: Quote Card -->
+    <div class="pin bg-dark">
+      <div class="pin-quote">"Everything comes to me effortlessly. Doors open, opportunities call to me." ✨</div>
     </div>
-  </section>
 
-  <section id="resume">
-    <h2>Resume</h2>
-    <p><a href="Clara_Grimmelbein_Resume.pdf" target="_blank">Download my resume</a></p>
-  </section>
+    <!-- Pin: Image Card -->
+    <div class="pin">
+      <div class="ph ph-2">🌿</div>
+      <div class="pin-overlay"><button class="pin-save">Save</button></div>
+      <div class="pin-body">
+        <div class="pin-title">Weekend getaway ideas</div>
+        <div class="pin-desc">Travel · Adventure</div>
+      </div>
+    </div>
 
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>Email: esf3xw@virginia.edu</p>
-    <p>LinkedIn | GitHub</p>
-  </section>
+    <!-- Pin: Quote Card -->
+    <div class="pin bg-sunset">
+      <div class="pin-quote">Relax diva, you'll be fine 🍷</div>
+    </div>
 
-  <footer>
-    <p>&copy; 2025 Clara Grimmelbein</p>
-  </footer>
+    <!-- Pin: Image Card -->
+    <div class="pin">
+      <div class="ph ph-3">🎨</div>
+      <div class="pin-overlay"><button class="pin-save">Save</button></div>
+      <div class="pin-body">
+        <div class="pin-title">Color palette inspiration</div>
+        <div class="pin-desc">Design · Aesthetics</div>
+      </div>
+    </div>
+
+    <!-- Pin: Image Card -->
+    <div class="pin">
+      <div class="ph ph-4">🏛️</div>
+      <div class="pin-overlay"><button class="pin-save">Save</button></div>
+      <div class="pin-body">
+        <div class="pin-title">Architecture diary</div>
+        <div class="pin-desc">Architecture · Travel</div>
+      </div>
+    </div>
+
+    <!-- Pin: Quote Card -->
+    <div class="pin bg-mint">
+      <div class="pin-quote">You don't have to be everyone's cup of tea. Be gasoline. Set things on fire. 🔥</div>
+    </div>
+
+    <!-- Pin: Image Card -->
+    <div class="pin">
+      <div class="ph ph-5">🥑</div>
+      <div class="pin-overlay"><button class="pin-save">Save</button></div>
+      <div class="pin-body">
+        <div class="pin-title">Clean eating recipes</div>
+        <div class="pin-desc">Food · Wellness</div>
+      </div>
+    </div>
+
+    <!-- Pin: Image Card -->
+    <div class="pin">
+      <div class="ph ph-6">🌸</div>
+      <div class="pin-overlay"><button class="pin-save">Save</button></div>
+      <div class="pin-body">
+        <div class="pin-title">Spring fashion lookbook</div>
+        <div class="pin-desc">Fashion · Style</div>
+      </div>
+    </div>
+
+    <!-- Pin: Quote Card -->
+    <div class="pin bg-lav">
+      <div class="pin-quote">Live in the moment 🧘‍♀️</div>
+    </div>
+
+    <!-- Pin: Image Card -->
+    <div class="pin">
+      <div class="ph ph-7">✈️</div>
+      <div class="pin-overlay"><button class="pin-save">Save</button></div>
+      <div class="pin-body">
+        <div class="pin-title">Places to visit in 2026</div>
+        <div class="pin-desc">Bucket list · Wanderlust</div>
+      </div>
+    </div>
+
+    <!-- Pin: Image Card -->
+    <div class="pin">
+      <div class="ph ph-8">🏡</div>
+      <div class="pin-overlay"><button class="pin-save">Save</button></div>
+      <div class="pin-body">
+        <div class="pin-title">Dream home interiors</div>
+        <div class="pin-desc">Home decor · Minimalism</div>
+      </div>
+    </div>
+
+    <!-- Pin: Quote Card -->
+    <div class="pin bg-warm">
+      <div class="pin-quote">"Nothing changes if nothing changes." 💫</div>
+    </div>
+
+    <!-- Pin: Image Card -->
+    <div class="pin">
+      <div class="ph ph-9">🏃‍♀️</div>
+      <div class="pin-overlay"><button class="pin-save">Save</button></div>
+      <div class="pin-body">
+        <div class="pin-title">Morning run motivation</div>
+        <div class="pin-desc">Fitness · Health</div>
+      </div>
+    </div>
+
+    <!-- Pin: Image Card -->
+    <div class="pin">
+      <div class="ph ph-10">💡</div>
+      <div class="pin-overlay"><button class="pin-save">Save</button></div>
+      <div class="pin-body">
+        <div class="pin-title">Creative workspace setup</div>
+        <div class="pin-desc">Productivity · Work from home</div>
+      </div>
+    </div>
+
+    <!-- Pin: Quote Card -->
+    <div class="pin bg-rose">
+      <div class="pin-quote">You've entered the chapter where everything falls into place 🌹</div>
+    </div>
+
+    <!-- Pin: Image Card -->
+    <div class="pin">
+      <div class="ph ph-11">📚</div>
+      <div class="pin-overlay"><button class="pin-save">Save</button></div>
+      <div class="pin-body">
+        <div class="pin-title">2026 reading list</div>
+        <div class="pin-desc">Books · Self growth</div>
+      </div>
+    </div>
+
+    <!-- Pin: Image Card -->
+    <div class="pin">
+      <div class="ph ph-12">🎵</div>
+      <div class="pin-overlay"><button class="pin-save">Save</button></div>
+      <div class="pin-body">
+        <div class="pin-title">Playlist vibes</div>
+        <div class="pin-desc">Music · Chill</div>
+      </div>
+    </div>
+
+    <!-- Pin: Quote Card -->
+    <div class="pin bg-sky">
+      <div class="pin-quote">They'll copy you once they can't ignore you 😌</div>
+    </div>
+
+    <!-- Pin: Image Card -->
+    <div class="pin">
+      <div class="ph ph-13">🌙</div>
+      <div class="pin-overlay"><button class="pin-save">Save</button></div>
+      <div class="pin-body">
+        <div class="pin-title">Night sky photography</div>
+        <div class="pin-desc">Astro · Long exposure</div>
+      </div>
+    </div>
+
+    <!-- Pin: Image Card -->
+    <div class="pin">
+      <div class="ph ph-14">🧁</div>
+      <div class="pin-overlay"><button class="pin-save">Save</button></div>
+      <div class="pin-body">
+        <div class="pin-title">Weekend baking ideas</div>
+        <div class="pin-desc">Baking · Desserts</div>
+      </div>
+    </div>
+
+    <!-- Pin: Quote Card -->
+    <div class="pin bg-peach">
+      <div class="pin-quote">Main character energy only ☀️</div>
+    </div>
+
+    <!-- Pin: Image Card -->
+    <div class="pin">
+      <div class="ph ph-15">🌊</div>
+      <div class="pin-overlay"><button class="pin-save">Save</button></div>
+      <div class="pin-body">
+        <div class="pin-title">Ocean therapy</div>
+        <div class="pin-desc">Beach · Calm</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p>© 2026 Your Name · Built with ❤️ · <a href="#">About</a> · <a href="#">Contact</a> · <a href="#">Privacy</a></p>
+</footer>
+
+<script>
+  function switchTab(el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+</script>
 </body>
 </html>
